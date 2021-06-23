@@ -38,11 +38,38 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: (CatalogModel.items.isNotEmpty)
-            ? ListView.builder(
-                itemCount: CatalogModel.items.length,
-                itemBuilder: (context, index) => ItemWidget(
-                  item: CatalogModel.items[index],
+            ? GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  crossAxisCount: 2,
                 ),
+                itemBuilder: (context, index) {
+                  final item = CatalogModel.items[index];
+                  return Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: GridTile(
+                      header: Container(
+                        decoration: BoxDecoration(color: Colors.deepPurple),
+                        child: Text(item.name,
+                            style: TextStyle(color: Colors.white)),
+                        padding: const EdgeInsets.all(12),
+                      ),
+                      child: Image.network(
+                        item.image,
+                      ),
+                      footer: Container(
+                        decoration: BoxDecoration(color: Colors.black),
+                        child: Text(item.price.toString(),
+                            style: TextStyle(color: Colors.white)),
+                        padding: const EdgeInsets.all(12),
+                      ),
+                    ),
+                  );
+                },
+                itemCount: CatalogModel.items.length,
               )
             : Center(
                 child: CircularProgressIndicator(),
